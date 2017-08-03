@@ -19,6 +19,7 @@ namespace Comp2007_Final.Models
 
         [Required]
         [StringLength(250)]
+        [Display(Name ="Colour Name")]
         public string Name { get; set; }
 
         [Display(Name = "Create Date")]

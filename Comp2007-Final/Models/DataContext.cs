@@ -26,8 +26,7 @@ namespace Comp2007_Final.Models
             modelBuilder.Ignore<IdentityUserClaim>();
 
             modelBuilder.Entity<ApplicationUser>().ToTable("AspNetUsers");
-
-
+            
             modelBuilder.Entity<Colour>()
                 .HasMany(e => e.Items)
                 .WithRequired(e => e.Colour)
