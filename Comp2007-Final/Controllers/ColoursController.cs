@@ -50,17 +50,26 @@ namespace Comp2007_Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name")] Colour colour)
+        public ActionResult Create([Bind(Include = "Name")] Colour model)
         {
             if (ModelState.IsValid)
             {
 
-                db.Colours.Add(colour);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                Colour checkcolour = db.Colours.SingleOrDefault(x => x.Name.ToLower() == model.Name.ToLower());
+                if (checkcolour == null)
+                {
+                    db.Colours.Add(model);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Duplicate colour entry");
+                }              
+              
             }
 
-            return View(colour);
+            return View(model);
         }
 
         // GET: Colours/Edit/5
@@ -83,15 +92,30 @@ namespace Comp2007_Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ColourId,Name,CreateDate,EditDate")] Colour colour)
+        public ActionResult Edit([Bind(Include = "ColourId,Name")] Colour model)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(colour).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                Colour tmpmodel = db.Colours.Find(model.ColourId);
+                if (tmpmodel != null)
+                {
+                    Colour checkcolour = db.Colours.SingleOrDefault(x => x.Name.ToLower() == model.Name.ToLower() && x.ColourId != model.ColourId);
+                    if (checkcolour == null)
+                    {
+                        tmpmodel.Name = model.Name;
+                        tmpmodel.EditDate = DateTime.UtcNow;
+
+                        db.Entry(tmpmodel).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Duplicate colour entry");
+                    }
+                }
             }
-            return View(colour);
+            return View(model);
         }
 
         // GET: Colours/Delete/5
@@ -115,6 +139,13 @@ namespace Comp2007_Final.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             Colour colour = db.Colours.Find(id);
+
+            //Delete Items with Colours attached
+            //foreach(var data in colour.Items.ToList())
+            //{
+            //    db.Orders.Remove(data);
+            //}
+
             db.Colours.Remove(colour);
             db.SaveChanges();
             return RedirectToAction("Index");
