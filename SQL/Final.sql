@@ -2,6 +2,7 @@ CREATE TABLE dbo.Colours
 (
     ColourId nvarchar(128) NOT NULL DEFAULT (newid()),
 	Name nvarchar(250) NOT NULL,
+	Type nvarchar(128) NOT NULL,
     CreateDate datetime NOT NULL DEFAULT((getdate())),
     EditDate datetime NOT NULL DEFAULT((getdate())),
  CONSTRAINT [PK_Colours] PRIMARY KEY CLUSTERED 
@@ -16,7 +17,6 @@ CREATE TABLE dbo.Items
 (
     ItemId nvarchar(128) NOT NULL DEFAULT (newid()),
 	Name nvarchar(250) NOT NULL,
-	IsGift bit DEFAULT(0) NOT NULL,
 	ColourId nvarchar(128) NOT NULL,
     CreateDate datetime NOT NULL DEFAULT((getdate())),
     EditDate datetime NOT NULL DEFAULT((getdate())),
