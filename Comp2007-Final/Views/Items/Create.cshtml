@@ -15,7 +15,6 @@
         <h4>Item</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -24,17 +23,7 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsGift, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsGift)
-                    @Html.ValidationMessageFor(model => model.IsGift, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <!-- List of Colours-->
+        <!-- List of Colours -->
         <div class="form-group">
             @Html.LabelFor(model => model.Colours, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -42,7 +31,8 @@
                     <ul style="list-style-type:none">
                         @foreach (var item in (MultiSelectList)ViewBag.Colours)
                         {
-                            <li><input type="checkbox" value="@item.Value" name="Colours" @(item.Selected ? "checked" : "") /> @item.Text</li>                        }
+                            <li><input type="checkbox" value="@item.Value" name="GenreIds" @(item.Selected ? "checked" : "") /> @item.Text</li>
+                        }
                     </ul>
                     @Html.ValidationMessageFor(model => model.Colours, "", new { @class = "text-danger" })
                 </div>

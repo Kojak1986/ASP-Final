@@ -6,8 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Comp2007_Final.Models;
 
-namespace Comp2007_Final.Models
+namespace Comp2007_Final.Controllers
 {
     public class ItemsController : Controller
     {
@@ -18,6 +19,7 @@ namespace Comp2007_Final.Models
         {
             //Sort Items
             var items = db.Items.AsQueryable();
+            items = items.OrderBy(x => x.Name).AsQueryable();
 
             return View(db.Items.ToList());
         }
@@ -42,7 +44,7 @@ namespace Comp2007_Final.Models
         {
             Item model = new Item();
             ViewBag.Colours = new MultiSelectList(db.Colours.ToList(), "ColourId", "Name", model.Colours.Select(x => x.ColourId).ToArray());
-            return View();
+            return View(model);
         }
 
         // POST: Items/Create
@@ -50,40 +52,39 @@ namespace Comp2007_Final.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name,IsGift,ColourIds")] Item model, string[] ColourIds)
+        public ActionResult Create([Bind(Include = "Name,ColourIds")] Item model, string[] ColourIds)
         {
             if (ModelState.IsValid)
             {
-
-
-                Item checkmodel = db.Items.SingleOrDefault(x => x.Name.ToLower() == model.Name.ToLower() && x.IsGift == model.IsGift);
+                Item checkmodel = db.Items.SingleOrDefault(x => x.Name.ToLower() == model.Name.ToLower());
                 if (checkmodel == null)
                 {
                     db.Items.Add(model);
                     db.SaveChanges();
 
-                    //foreach (string colourid in ColourIds)
-                    //{
-                    //    Stock stock = new Stock();
+                    if (ColourIds != null)
+                    {
+                        foreach (string id in ColourIds)
+                        {
+                            Order order = new Models.Order();
+                            order.OrderId = Guid.NewGuid().ToString();
+                            order.ItemId = model.ItemId;
+                            order.ColourId = id;
+                            order.CreateDate = DateTime.UtcNow;
+                            order.EditDate = order.CreateDate;
+                        }
 
-                    //    stock.ItemId = model.ItemId;
-                    //    stock.ColourId = model.colourid;
+                        db.Entry(model).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
 
-                    //    model.Colours.Add(stock);
-                    //}
-
-                    //db.Entry(model).State = EntityState.Modified;
-                    //db.SaveChanges();
-
+                    return RedirectToAction("Index");
                 }
-
-                return RedirectToAction("Index");
+                else
+                {
+                    ModelState.AddModelError("", "Duplicate item entry");
+                }
             }
-            else
-            {
-                ModelState.AddModelError("", "Duplicate Item Entry");
-            }
-            ViewBag.Colours = new MultiSelectList(db.Colours.ToList(), "ColourId", "Name", ColourIds);
 
             return View(model);
         }

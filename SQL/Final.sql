@@ -1,10 +1,14 @@
+DROP TABLE orders
+DROP TABLE items
+DROP TABLE colours
+
 CREATE TABLE dbo.Colours
 (
     ColourId nvarchar(128) NOT NULL DEFAULT (newid()),
 	Name nvarchar(250) NOT NULL,
 	Type nvarchar(128) NOT NULL,
-    CreateDate datetime NOT NULL DEFAULT((getdate())),
-    EditDate datetime NOT NULL DEFAULT((getdate())),
+    CreateDate datetime NOT NULL DEFAULT((getUtcdate())),
+    EditDate datetime NOT NULL DEFAULT((getUtcdate())),
  CONSTRAINT [PK_Colours] PRIMARY KEY CLUSTERED 
 (
 	[ColourId] ASC
@@ -17,9 +21,8 @@ CREATE TABLE dbo.Items
 (
     ItemId nvarchar(128) NOT NULL DEFAULT (newid()),
 	Name nvarchar(250) NOT NULL,
-	ColourId nvarchar(128) NOT NULL,
-    CreateDate datetime NOT NULL DEFAULT((getdate())),
-    EditDate datetime NOT NULL DEFAULT((getdate())),
+    CreateDate datetime NOT NULL DEFAULT((getUtcdate())),
+    EditDate datetime NOT NULL DEFAULT((getUtcdate())),
  CONSTRAINT [PK_Items] PRIMARY KEY CLUSTERED 
 (
 	[ItemId] ASC
@@ -28,14 +31,11 @@ CREATE TABLE dbo.Items
 );
 
 
-ALTER TABLE [dbo].[Items]  WITH CHECK ADD  CONSTRAINT [FK_Items_Colours] FOREIGN KEY([ColourId])
-REFERENCES [dbo].[Colours] ([ColourId]);
-
 CREATE TABLE dbo.Orders
 (
     OrderId nvarchar(128) NOT NULL DEFAULT (newid()),
-    CreateDate datetime NOT NULL DEFAULT((getdate())),
-    EditDate datetime NOT NULL DEFAULT((getdate())),
+    CreateDate datetime NOT NULL DEFAULT((getUtcdate())),
+    EditDate datetime NOT NULL DEFAULT((getUtcdate())),
  CONSTRAINT [PK_Orders] PRIMARY KEY CLUSTERED 
 (
 	[OrderId] ASC

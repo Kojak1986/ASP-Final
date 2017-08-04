@@ -15,11 +15,8 @@ namespace Comp2007_Final.Models
 
         [Required]
         [StringLength(250)]
-        [Display(Name = "Item Name")]
+        [Display(Name = "Item")]
         public string Name { get; set; }
-
-        [Display(Name = "Is A Gift")]
-        public bool IsGift { get; set; }
 
         [Display(Name = "Create Date")]
         [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
