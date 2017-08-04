@@ -50,13 +50,16 @@ namespace Comp2007_Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name")] Colour model)
+        public ActionResult Create([Bind(Include = "Name")] Colour model, FormCollection fc)
         {
             if (ModelState.IsValid)
             {
                 Colour checkmodel = db.Colours.SingleOrDefault(x => x.Name.ToLower() == model.Name.ToLower());
                 if (checkmodel == null)
                 {
+                    //Finds selection from DropDown
+                    model.Type = fc["Type"];
+
                     db.Colours.Add(model);
                     db.SaveChanges();
                     return RedirectToAction("Index");

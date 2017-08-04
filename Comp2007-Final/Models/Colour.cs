@@ -19,8 +19,12 @@ namespace Comp2007_Final.Models
 
         [Required]
         [StringLength(250)]
-        [Display(Name ="Colour Name")]
+        [Display(Name ="Colour")]
         public string Name { get; set; }
+
+        [StringLength(128)]
+        [Display(Name = "Type")]
+        public string Type { get; set; }
 
         [Display(Name = "Create Date")]
         [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
