@@ -54,9 +54,8 @@ namespace Comp2007_Final.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                Colour checkcolour = db.Colours.SingleOrDefault(x => x.Name.ToLower() == model.Name.ToLower());
-                if (checkcolour == null)
+                Colour checkmodel = db.Colours.SingleOrDefault(x => x.Name.ToLower() == model.Name.ToLower());
+                if (checkmodel == null)
                 {
                     db.Colours.Add(model);
                     db.SaveChanges();
