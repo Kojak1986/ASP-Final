@@ -22,3 +22,37 @@ select,
 textarea {
     max-width: 280px;
 }
+
+/* CUSTOME CSS */
+
+.indexCaption{
+    position: absolute;
+    left: 0;
+    top: 40%;
+    width: 100%;
+    text-align: center;
+    color: #000;
+}
+
+.border{
+    background-color: #101010;
+    color: #fff;
+    padding: 18px;
+}
+.border p{
+    font-size: 15px;
+}
+
+footer {
+    color: #FFF;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #101010;
+}
+
+footer p {
+    text-align: center;
+    padding-top: 20px;
+}
