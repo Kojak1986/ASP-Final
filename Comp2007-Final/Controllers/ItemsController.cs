@@ -43,7 +43,9 @@ namespace Comp2007_Final.Controllers
         public ActionResult Create()
         {
             Item model = new Item();
+            //All colours
             ViewBag.Colours = new MultiSelectList(db.Colours.ToList(), "ColourId", "Name", model.Colours.Select(x => x.ColourId).ToArray());
+
             return View(model);
         }
 

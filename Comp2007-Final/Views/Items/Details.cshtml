@@ -3,13 +3,12 @@
 @{
     ViewBag.Title = "Details";
 }
-
-<h2>Details</h2>
+ 
+<h2>Details Item</h2>
 
 <div>
-    <h4>Item</h4>
     <hr />
-    <dl class="dl-horizontal">
+    <dl class="dl-horizontal imageInfo">
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -36,6 +35,12 @@
 
     </dl>
 </div>
+    
+ <!-- IMAGE -->
+            <img class="itemImg" src="../../Content/Assets/@(Html.DisplayFor(model => model.Name)).png" onerror="this.onerror = null; this.src = '../../Content/Assets/nofile.png'"/>
+
+
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ItemId }) |
     @Html.ActionLink("Back to List", "Index")

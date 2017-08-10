@@ -24,32 +24,77 @@ textarea {
 }
 
 /* CUSTOME CSS */
+/* All */
+h2{
+    color: #E9AD38;
+    text-transform: uppercase;
+}
 
+.itemImg{
+    width: 325px;
+    height: 325px;
+}
+
+/* All Index */
+.itemImgSmall{
+     width:200px;
+     height:200px;
+}
+
+.hover_img a{
+     position:relative; 
+}
+
+.hover_img a span{ 
+    position:absolute; 
+    display:none; 
+    z-index:99; 
+}
+
+.hover_img a:hover span { display:block; }
+
+/* Home Index */
 .indexCaption{
     position: absolute;
     left: 0;
-    top: 40%;
+    top: 30%;
     width: 100%;
     text-align: center;
     color: #000;
 }
 
 .border{
-    background-color: #101010;
+    background-color: #222222;
     color: #fff;
-    padding: 18px;
+    padding: 10px;
 }
-.border p{
-    font-size: 15px;
+.border h1{
+    color: #E9AD38;
+    text-transform: uppercase;
+    margin-top: 10px;
+
 }
 
+.border p{
+    font-size: 14px;
+}
+
+
+/* Details*/
+.imageInfo{
+      float: left;
+      width: 45%;
+      margin-right: 5%;
+}
+/* Footer */
+
 footer {
-    color: #FFF;
+    color: #999999;
     position: absolute;
     bottom: 0;
     width: 100%;
     height: 60px;
-    background-color: #101010;
+    background-color: #222222;
 }
 
 footer p {
