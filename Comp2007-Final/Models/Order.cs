@@ -34,7 +34,7 @@ namespace Comp2007_Final.Models
         public string FinishId { get; set; }
 
         [ForeignKey("FinishId")]
-        public virtual ItemFinish Finish { get; set; }
+        public virtual ItemFinish ItemFinish { get; set; }
 
         [Display(Name = "Create Date")]
         [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
@@ -45,7 +45,7 @@ namespace Comp2007_Final.Models
 
         public override string ToString()
         {
-            return String.Format("{0} - {1}", Item.ToString(), Colour.ToString(), Finish.ToString());
+            return String.Format("{0} - {1}", Item.ToString(), Colour.ToString(), ItemFinish.ToString());
         }
     }
 }

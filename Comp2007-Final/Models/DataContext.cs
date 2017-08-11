@@ -37,6 +37,11 @@ namespace Comp2007_Final.Models
                 .HasMany(e => e.Colours)
                 .WithRequired(e => e.Item)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ItemFinish>()
+                .HasMany(e => e.Items)
+                .WithRequired(e => e.ItemFinish)
+                .WillCascadeOnDelete(false);
         }
     }
 }

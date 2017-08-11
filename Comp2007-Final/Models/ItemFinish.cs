@@ -16,5 +16,9 @@ namespace Comp2007_Final.Models
         [StringLength(250)]
         [Display(Name ="Finish")]
         public string Name { get; set; }
+
+        [Display(Name = "Items")]
+        [InverseProperty("ItemFinish")]
+        public virtual ICollection<Order> Items { get; set; } = new HashSet<Order>();
     }
 }

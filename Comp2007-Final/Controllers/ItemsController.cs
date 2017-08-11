@@ -55,7 +55,7 @@ namespace Comp2007_Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name,ColourIds")] Item model, string[] ColourIds)
+        public ActionResult Create([Bind(Include = "Name,ColourIds")] Item model, string[] ColoursIds, FormCollection fc)
         {
             if (ModelState.IsValid)
             {
@@ -65,16 +65,17 @@ namespace Comp2007_Final.Controllers
                     db.Items.Add(model);
                     db.SaveChanges();
 
-                    if (ColourIds != null)
+                    if (ColoursIds != null)
                     {
-                        foreach (string id in ColourIds)
+                        foreach (string colourid in ColoursIds)
                         {
-                            Order order = new Models.Order();
-                            order.OrderId = Guid.NewGuid().ToString();
+                            Order order = new Order();
+
                             order.ItemId = model.ItemId;
-                            order.ColourId = id;
-                            order.CreateDate = DateTime.UtcNow;
-                            order.EditDate = order.CreateDate;
+                            order.ColourId = colourid;
+                            order.FinishId = fc["FinishId"]; ;
+
+                            model.Colours.Add(order);
                         }
 
                         db.Entry(model).State = EntityState.Modified;
