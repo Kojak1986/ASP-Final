@@ -149,6 +149,13 @@ namespace Comp2007_Final.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             Item item = db.Items.Find(id);
+
+            //delete game with genres attached
+            foreach (var orderdata in item.Colours.ToList())
+            {
+                db.Orders.Remove(orderdata);
+            }
+
             db.Items.Remove(item);
             db.SaveChanges();
             return RedirectToAction("Index");
