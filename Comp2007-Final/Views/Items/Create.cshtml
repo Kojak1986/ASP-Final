@@ -11,7 +11,7 @@
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
+    <div class="form-horizontal imageInfo">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -22,6 +22,9 @@
             </div>
         </div>
 
+        <!-- List of Finish (DROPDOWN) -->
+        @Html.Partial("_FinishControls", new Comp2007_Final.Models.ItemFinish())
+
         <!-- List of Colours (CHECKBOX) -->
         <div class="form-group">
             @Html.LabelFor(model => model.Colours, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -30,16 +33,13 @@
                     <ul style="list-style-type:none">
                         @foreach (var item in (MultiSelectList)ViewBag.Colours)
                         {
-                            <li><input type="checkbox" value="@item.Value" name="GenreIds" @(item.Selected ? "checked" : "") /> @item.Text</li>
+                            <li><input type="checkbox" value="@item.Value" name="ColoursIds" @(item.Selected ? "checked" : "") /> @item.Text</li>
                         }
                     </ul>
                     @Html.ValidationMessageFor(model => model.Colours, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
-
-        <!-- List of Finish (DROPDOWN) -->
-        @Html.Partial("_FinishControls", new Comp2007_Final.Models.ItemFinish())
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

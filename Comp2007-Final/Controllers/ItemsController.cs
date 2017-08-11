@@ -99,12 +99,16 @@ namespace Comp2007_Final.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Item item = db.Items.Find(id);
-            if (item == null)
+            Item model = db.Items.Find(id);
+            if (model == null)
             {
                 return HttpNotFound();
             }
-            return View(item);
+
+            ViewBag.Colours = new MultiSelectList(db.Colours.ToList(), "ColourId", "Name", model.Colours.Select(x => x.ColourId).ToArray());
+            ViewBag.Finish = db.ItemFinishes.ToList();
+
+            return View(model);
         }
 
         // POST: Items/Edit/5
