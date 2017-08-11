@@ -1,9 +1,9 @@
-Drop Table itemfinish
 DROP TABLE orders
 DROP TABLE items
 DROP TABLE colours
+DROP TABLE ItemFinish
 
-CREATE TABLE dbo.ItemFinsih
+CREATE TABLE dbo.ItemFinish
 (
     FinishId nvarchar(128) NOT NULL DEFAULT (newid()),
 	Name nvarchar(250) NOT NULL,
