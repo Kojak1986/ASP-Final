@@ -17,7 +17,8 @@ namespace Comp2007_Final.Models
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<Colour> Colours { get; set; }
-        
+        public virtual DbSet<ItemFinish> ItemFinishes { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

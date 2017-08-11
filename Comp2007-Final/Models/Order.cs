@@ -28,6 +28,14 @@ namespace Comp2007_Final.Models
         [ForeignKey("ColourId")]
         public virtual Colour Colour { get; set; }
 
+        [Required]
+        [StringLength(128)]
+        [Display(Name = "ItemFinish")]
+        public string FinishId { get; set; }
+
+        [ForeignKey("FinishId")]
+        public virtual ItemFinish Finish { get; set; }
+
         [Display(Name = "Create Date")]
         [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
         public DateTime CreateDate { get; set; }
@@ -37,7 +45,7 @@ namespace Comp2007_Final.Models
 
         public override string ToString()
         {
-            return String.Format("{0} - {1}", Item.ToString(), Colour.ToString());
+            return String.Format("{0} - {1}", Item.ToString(), Colour.ToString(), Finish.ToString());
         }
     }
 }

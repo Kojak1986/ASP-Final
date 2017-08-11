@@ -45,6 +45,7 @@ namespace Comp2007_Final.Controllers
             Item model = new Item();
             //All colours
             ViewBag.Colours = new MultiSelectList(db.Colours.ToList(), "ColourId", "Name", model.Colours.Select(x => x.ColourId).ToArray());
+            ViewBag.Finish = db.ItemFinishes.ToList();
 
             return View(model);
         }

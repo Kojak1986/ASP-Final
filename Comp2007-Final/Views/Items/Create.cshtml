@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <!-- List of Colours -->
+        <!-- List of Colours (CHECKBOX) -->
         <div class="form-group">
             @Html.LabelFor(model => model.Colours, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -37,6 +37,9 @@
                 </div>
             </div>
         </div>
+
+        <!-- List of Finish (DROPDOWN) -->
+        @Html.Partial("_FinishControls", new Comp2007_Final.Models.ItemFinish())
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
