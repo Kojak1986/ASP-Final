@@ -1,12 +1,26 @@
+Drop Table itemfinish
 DROP TABLE orders
 DROP TABLE items
 DROP TABLE colours
+
+CREATE TABLE dbo.ItemFinsih
+(
+    FinishId nvarchar(128) NOT NULL DEFAULT (newid()),
+	Name nvarchar(250) NOT NULL,
+ CONSTRAINT [PK_FinishId] PRIMARY KEY CLUSTERED 
+(
+	[FinishId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+);
+
+INSERT INTO [dbo].[ItemFinsih](Name) VALUES ('Glossy');
+INSERT INTO [dbo].[ItemFinsih](Name) VALUES ('Matte');
 
 CREATE TABLE dbo.Colours
 (
     ColourId nvarchar(128) NOT NULL DEFAULT (newid()),
 	Name nvarchar(250) NOT NULL,
-	Type nvarchar(128) NOT NULL,
     CreateDate datetime NOT NULL DEFAULT((getUtcdate())),
     EditDate datetime NOT NULL DEFAULT((getUtcdate())),
  CONSTRAINT [PK_Colours] PRIMARY KEY CLUSTERED 
@@ -34,7 +48,7 @@ CREATE TABLE dbo.Items
 CREATE TABLE dbo.Orders
 (
     OrderId nvarchar(128) NOT NULL DEFAULT (newid()),
-    CreateDate datetime NOT NULL DEFAULT((getUtcdate())),
+	CreateDate datetime NOT NULL DEFAULT((getUtcdate())),
     EditDate datetime NOT NULL DEFAULT((getUtcdate())),
  CONSTRAINT [PK_Orders] PRIMARY KEY CLUSTERED 
 (
@@ -54,3 +68,8 @@ ALTER TABLE [dbo].[Orders] ADD [ColourId] nvarchar(128) NOT NULL;
 
 ALTER TABLE [dbo].[Orders]  WITH CHECK ADD  CONSTRAINT [FK_Orders_Colours] FOREIGN KEY([ColourId])
 REFERENCES [dbo].[Colours] ([ColourId]);
+
+ALTER TABLE [dbo].[Orders] ADD [FinishId] nvarchar(128) NOT NULL;
+
+ALTER TABLE [dbo].[Orders]  WITH CHECK ADD  CONSTRAINT [FK_Orders_ItemFinish] FOREIGN KEY([FinishId])
+REFERENCES [dbo].[ItemFinish] ([FinishId]);

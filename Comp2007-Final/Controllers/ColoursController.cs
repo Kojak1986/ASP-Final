@@ -50,7 +50,7 @@ namespace Comp2007_Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name")] Colour model, FormCollection fc)
+        public ActionResult Create([Bind(Include = "Name")] Colour model) //, FormCollection fc)
         {
             if (ModelState.IsValid)
             {
@@ -58,7 +58,7 @@ namespace Comp2007_Final.Controllers
                 if (checkmodel == null)
                 {
                     //Finds selection from DropDown
-                    model.Type = fc["Type"];
+                  //  model.Type = fc["Type"];
 
                     db.Colours.Add(model);
                     db.SaveChanges();
@@ -106,7 +106,7 @@ namespace Comp2007_Final.Controllers
                     {
                         tmpmodel.Name = model.Name;
                         //Finds selection from DropDown
-                        tmpmodel.Type = fc["Type"];
+                        //tmpmodel.Type = fc["Type"];
                         tmpmodel.EditDate = DateTime.UtcNow;
 
                         db.Entry(tmpmodel).State = EntityState.Modified;
