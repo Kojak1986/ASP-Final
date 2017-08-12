@@ -117,15 +117,64 @@ namespace Comp2007_Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ItemId,Name,IsGift,CreateDate,EditDate")] Item item)
+        public ActionResult Edit([Bind(Include = "ItemId,Name,CreateDate,EditDate")] Item model, string[] ColourIds)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(item).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                Item tmpModel = db.Items.Find(model.ItemId); 
+                if (tmpModel != null)
+                {
+                    Item checkModel = db.Items.SingleOrDefault(
+                                        x => x.Name == model.Name &&
+                                        x.ItemId != model.ItemId);
+                    
+
+                    if (checkModel == null)
+                    {
+                        tmpModel.Name = model.Name;
+                        tmpModel.EditDate = DateTime.Now;
+
+
+                        db.Entry(tmpModel).State = EntityState.Modified;
+
+                        //To remove
+                        var removeItems = tmpModel.Colours.Where(x => !ColourIds.Contains(x.ColourId)).ToList();
+
+                        foreach (var removeItem in removeItems)
+                        {
+                            db.Entry(removeItem).State = EntityState.Deleted;
+                        }
+                        if (ColourIds != null)
+                        {
+                            var addItems = ColourIds.Where(x => !tmpModel.Colours.Select(y => y.ColourId).Contains(x));
+                            //Items to add
+                            foreach (string addItem in addItems)
+                            {
+                                Order order = new Order();
+                                order.OrderId = Guid.NewGuid().ToString();
+                                order.CreateDate = DateTime.Now;
+                                order.EditDate = order.CreateDate;
+
+                                order.ItemId = tmpModel.ItemId;
+                                //added this
+                                order.FinishId = addItem;
+                                order.ColourId = addItem;
+
+                                db.Orders.Add(order);
+                            }
+                        }
+
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Duplicated game detected. ");
+                    }
+                }
             }
-            return View(item);
+            ViewBag.Genres = new MultiSelectList(db.Colours.ToList(), "GenreId", "Name", ColourIds);
+            return View(model);
         }
 
         // GET: Items/Delete/5
