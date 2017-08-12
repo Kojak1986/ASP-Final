@@ -1,6 +1,7 @@
 DROP TABLE orders
 DROP TABLE items
 DROP TABLE colours
+DROP TABLE ItemFinsih
 DROP TABLE ItemFinish
 
 CREATE TABLE dbo.ItemFinish
@@ -14,8 +15,8 @@ CREATE TABLE dbo.ItemFinish
 
 );
 
-INSERT INTO [dbo].[ItemFinsih](Name) VALUES ('Glossy');
-INSERT INTO [dbo].[ItemFinsih](Name) VALUES ('Matte');
+INSERT INTO [dbo].[ItemFinish](Name) VALUES ('Glossy');
+INSERT INTO [dbo].[ItemFinish](Name) VALUES ('Matte');
 
 CREATE TABLE dbo.Colours
 (
