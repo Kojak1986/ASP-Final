@@ -105,8 +105,6 @@ namespace Comp2007_Final.Controllers
                     if (checkcolour == null)
                     {
                         tmpmodel.Name = model.Name;
-                        //Finds selection from DropDown
-                        //tmpmodel.Type = fc["Type"];
                         tmpmodel.EditDate = DateTime.UtcNow;
 
                         db.Entry(tmpmodel).State = EntityState.Modified;
@@ -145,10 +143,10 @@ namespace Comp2007_Final.Controllers
             Colour colour = db.Colours.Find(id);
 
             //Delete Items with Colours attached
-            //foreach(var data in colour.Items.ToList())
-            //{
-            //    db.Orders.Remove(data);
-            //}
+            foreach(var data in colour.Items.ToList())
+            {
+                db.Orders.Remove(data);
+            }
 
             db.Colours.Remove(colour);
             db.SaveChanges();
