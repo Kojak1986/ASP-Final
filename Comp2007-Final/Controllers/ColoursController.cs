@@ -50,21 +50,30 @@ namespace Comp2007_Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name")] Colour colour) //, FormCollection fc)
+        public ActionResult Create([Bind(Include = "Name")] Colour model) 
         {
             if (ModelState.IsValid)
             {
-                colour.ColourId = Guid.NewGuid().ToString();
-                colour.CreateDate = DateTime.Now;
-                colour.EditDate = colour.CreateDate;
+                Colour checkmodel = db.Colours.SingleOrDefault(x => x.Name.ToLower() == model.Name.ToLower());
+                if (checkmodel == null)
+                {
 
-                db.Colours.Add(colour);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                    model.ColourId = Guid.NewGuid().ToString();
+                    model.CreateDate = DateTime.Now;
+                    model.EditDate = model.CreateDate;
 
+                    db.Colours.Add(model);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Duplicate colour entry");
+                }
             }
 
-            return View(colour);
+            return View(model);
         }
 
         // GET: Colours/Edit/5
