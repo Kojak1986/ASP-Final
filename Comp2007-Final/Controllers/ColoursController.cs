@@ -58,10 +58,6 @@ namespace Comp2007_Final.Controllers
                 if (checkmodel == null)
                 {
 
-                    model.ColourId = Guid.NewGuid().ToString();
-                    model.CreateDate = DateTime.Now;
-                    model.EditDate = model.CreateDate;
-
                     db.Colours.Add(model);
                     db.SaveChanges();
                     return RedirectToAction("Index");
@@ -108,7 +104,7 @@ namespace Comp2007_Final.Controllers
                     if (tmpcolour != null)
                     {
                         tmpcolour.Name = model.Name;
-                        tmpcolour.EditDate = DateTime.Now;
+                        tmpcolour.EditDate = DateTime.UtcNow;
 
                         db.Entry(tmpcolour).State = EntityState.Modified;
                         db.SaveChanges();
