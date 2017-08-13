@@ -96,23 +96,32 @@ namespace Comp2007_Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ColourId,Name")] Colour colour, FormCollection fc)
+        public ActionResult Edit([Bind(Include = "ColourId,Name")] Colour model, FormCollection fc)
         {
             if (ModelState.IsValid)
             {
-                Colour tmpcolour = db.Colours.Find(colour.ColourId);
-                if (tmpcolour != null)
+                Colour checkmodel = db.Colours.SingleOrDefault(x => x.Name.ToLower() == model.Name.ToLower());
+                if (checkmodel == null)
                 {
-                    tmpcolour.Name = colour.Name;
-                    tmpcolour.EditDate = DateTime.Now;
 
-                    db.Entry(tmpcolour).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                
+                    Colour tmpcolour = db.Colours.Find(model.ColourId);
+                    if (tmpcolour != null)
+                    {
+                        tmpcolour.Name = model.Name;
+                        tmpcolour.EditDate = DateTime.Now;
+
+                        db.Entry(tmpcolour).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Duplicate colour entry");
                 }
             }
-            return View(colour);
+            return View(model);
         }
 
         // GET: Colours/Delete/5
