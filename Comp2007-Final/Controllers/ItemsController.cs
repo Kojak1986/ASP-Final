@@ -65,28 +65,31 @@ namespace Comp2007_Final.Controllers
                     db.Items.Add(model);
                     db.SaveChanges();
 
-                    if (ColourIds != null)
-                    {
-                        foreach (string colourid in ColourIds)
+                        //Check colours
+                        if (ColourIds != null)
                         {
-                            Order order = new Order();
+                            foreach (string colourid in ColourIds)
+                            {
+                                Order order = new Order();
+                                order.ItemId = model.ItemId;
+                                order.ColourId = colourid;
+                                order.FinishId = fc["FinishId"]; 
 
-                            order.ItemId = model.ItemId;
-                            order.ColourId = colourid;
-                            order.FinishId = fc["FinishId"]; ;
+                                model.Colours.Add(order);
+                            }
 
-                            model.Colours.Add(order);
-                        }
-
-                        db.Entry(model).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
+                            db.Entry(model).State = EntityState.Modified;
+                            db.SaveChanges();
+                       }
 
                     return RedirectToAction("Index");
                 }
                 else
                 {
+                    ViewBag.Colours = new MultiSelectList(db.Colours.ToList(), "ColourId", "Name", model.Colours.Select(x => x.ColourId).ToArray());
+                    ViewBag.Finish = db.ItemFinishes.ToList();
                     ModelState.AddModelError("", "Duplicate item entry");
+
                 }
             }
 
@@ -132,32 +135,29 @@ namespace Comp2007_Final.Controllers
                     if (checkModel == null)
                     {
                         tmpModel.Name = model.Name;
-                        tmpModel.EditDate = DateTime.Now;
+                        tmpModel.EditDate = DateTime.UtcNow;
 
 
                         db.Entry(tmpModel).State = EntityState.Modified;
 
-                        //To remove
+                        //To remove colours
                         var removeItems = tmpModel.Colours.Where(x => !ColourIds.Contains(x.ColourId)).ToList();
 
                         foreach (var removeItem in removeItems)
                         {
                             db.Entry(removeItem).State = EntityState.Deleted;
                         }
-                        if (ColourIds != null)
+
+                        if (ColourIds != null && fc["FinishId"] != null )
                         {
                             var addItems = ColourIds.Where(x => !tmpModel.Colours.Select(y => y.ColourId).Contains(x));
                             //Items to add
                             foreach (string addItem in addItems)
                             {
                                 Order order = new Order();
-                                order.OrderId = Guid.NewGuid().ToString();
-                                order.CreateDate = DateTime.Now;
-                                order.EditDate = order.CreateDate;
-
+                                order.EditDate = DateTime.UtcNow;
                                 order.ItemId = tmpModel.ItemId;
-                                //added this
-                                order.FinishId = fc["FinishId"]; 
+                                order.FinishId = fc["FinishId"];
                                 order.ColourId = addItem;
 
                                 db.Orders.Add(order);

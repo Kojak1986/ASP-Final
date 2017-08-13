@@ -31,13 +31,16 @@
             <div class="col-md-10">
                 <div class="checkbox">
                     <ul style="list-style-type:none">
+                       
                         @foreach (var item in (MultiSelectList)ViewBag.Colours)
                         {
                             <li><input type="checkbox" value="@item.Value" name="ColourIds" @(item.Selected ? "checked" : "") /> @item.Text</li>
                         }
                     </ul>
-                    @Html.ValidationMessageFor(model => model.Colours, "", new { @class = "text-danger" })
+                        
                 </div>
+                    @Html.ValidationMessageFor(model => model.Colours, "", new { @class = "text-danger" })
+                      
             </div>
         </div>
 
