@@ -6,6 +6,7 @@ namespace Comp2007_Final.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Linq;
 
     public partial class Item
     {
@@ -15,7 +16,7 @@ namespace Comp2007_Final.Models
 
         [Required]
         [StringLength(250)]
-        [Display(Name = "Item")]
+        [Display(Name = "Item Name")]
         public string Name { get; set; }
 
         [Display(Name = "Create Date")]

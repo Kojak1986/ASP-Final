@@ -17,7 +17,7 @@ namespace Comp2007_Final.Controllers
         // GET: Orders
         public ActionResult Index()
         {
-            var orders = db.Orders.Include(o => o.Colour).Include(o => o.ItemFinish).Include(o => o.Item);
+            var orders = db.Orders.Include(o => o.Item).Include(o => o.Colour).Include(o => o.ItemFinish);
             return View(orders.ToList());
         }
 
@@ -39,9 +39,10 @@ namespace Comp2007_Final.Controllers
         // GET: Orders/Create
         public ActionResult Create()
         {
+            ViewBag.ItemId = new SelectList(db.Items, "ItemId", "Name");
             ViewBag.ColourId = new SelectList(db.Colours, "ColourId", "Name");
             ViewBag.FinishId = new SelectList(db.ItemFinishes, "FinishId", "Name");
-            ViewBag.ItemId = new SelectList(db.Items, "ItemId", "Name");
+            
             return View();
         }
 
@@ -50,28 +51,34 @@ namespace Comp2007_Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "OrderId,ItemId,ColourId,FinishId,CreateDate,EditDate")] Order model)
+        public ActionResult Create([Bind(Include = "ItemId,ColourId,FinishId")] Order model)
         {
             if (ModelState.IsValid)
             {
-                Order checkmodel = db.Orders.FirstOrDefault(x => x.ItemId == model.ItemId && x.ColourId == model.ColourId && x.FinishId == model.FinishId);
+                Order tmporder = db.Orders
+                    .SingleOrDefault(x => x.ItemId == model.ItemId &&
+                    x.ColourId == model.ColourId && 
+                    x.FinishId == model.FinishId);
 
-                if(checkmodel != null)
+                if(tmporder == null)
                 {
-                    ModelState.AddModelError("", "Duplicate entry found");
-                }
-                else
-                {
+                    model.OrderId = Guid.NewGuid().ToString();
+                    model.CreateDate = DateTime.Now;
+                    model.EditDate = model.CreateDate;
+
                     db.Orders.Add(model);
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
+                else
+                {
+                    ModelState.AddModelError("", "Duplicate key found!");
+                }
               
             }
-
+            ViewBag.ItemId = new SelectList(db.Items, "ItemId", "Name", model.ItemId);
             ViewBag.ColourId = new SelectList(db.Colours, "ColourId", "Name", model.ColourId);
             ViewBag.FinishId = new SelectList(db.ItemFinishes, "FinishId", "Name", model.FinishId);
-            ViewBag.ItemId = new SelectList(db.Items, "ItemId", "Name", model.ItemId);
             return View(model);
         }
 
@@ -87,9 +94,10 @@ namespace Comp2007_Final.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.ItemId = new SelectList(db.Items, "ItemId", "Name", order.ItemId);
             ViewBag.ColourId = new SelectList(db.Colours, "ColourId", "Name", order.ColourId);
             ViewBag.FinishId = new SelectList(db.ItemFinishes, "FinishId", "Name", order.FinishId);
-            ViewBag.ItemId = new SelectList(db.Items, "ItemId", "Name", order.ItemId);
+            
             return View(order);
         }
 
@@ -98,7 +106,7 @@ namespace Comp2007_Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "OrderId,ItemId,ColourId,FinishId,CreateDate,EditDate")] Order order)
+        public ActionResult Edit([Bind(Include = "OrderId,CreateDate,EditDate,ItemId,ColourId,FinishId")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -106,9 +114,10 @@ namespace Comp2007_Final.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.ItemId = new SelectList(db.Items, "ItemId", "Name", order.ItemId);
             ViewBag.ColourId = new SelectList(db.Colours, "ColourId", "Name", order.ColourId);
             ViewBag.FinishId = new SelectList(db.ItemFinishes, "FinishId", "Name", order.FinishId);
-            ViewBag.ItemId = new SelectList(db.Items, "ItemId", "Name", order.ItemId);
+            
             return View(order);
         }
 

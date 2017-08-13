@@ -18,8 +18,8 @@ namespace Comp2007_Final.Controllers
         public ActionResult Index()
         {
             //Sort by Name
-            var colours = db.Colours.AsQueryable();
-            colours = colours.OrderBy(x => x.Name).AsQueryable();
+           // var colours = db.Colours.AsQueryable();
+            //colours = colours.OrderBy(x => x.Name).AsQueryable();
 
             return View(db.Colours.ToList());
         }
@@ -50,28 +50,21 @@ namespace Comp2007_Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name")] Colour model) //, FormCollection fc)
+        public ActionResult Create([Bind(Include = "Name")] Colour colour) //, FormCollection fc)
         {
             if (ModelState.IsValid)
             {
-                Colour checkmodel = db.Colours.SingleOrDefault(x => x.Name.ToLower() == model.Name.ToLower());
-                if (checkmodel == null)
-                {
-                    //Finds selection from DropDown
-                  //  model.Type = fc["Type"];
+                colour.ColourId = Guid.NewGuid().ToString();
+                colour.CreateDate = DateTime.Now;
+                colour.EditDate = colour.CreateDate;
 
-                    db.Colours.Add(model);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Duplicate colour entry");
-                }              
-              
+                db.Colours.Add(colour);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+
             }
 
-            return View(model);
+            return View(colour);
         }
 
         // GET: Colours/Edit/5
@@ -94,30 +87,23 @@ namespace Comp2007_Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ColourId,Name")] Colour model, FormCollection fc)
+        public ActionResult Edit([Bind(Include = "ColourId,Name")] Colour colour, FormCollection fc)
         {
             if (ModelState.IsValid)
             {
-                Colour tmpmodel = db.Colours.Find(model.ColourId);
-                if (tmpmodel != null)
+                Colour tmpcolour = db.Colours.Find(colour.ColourId);
+                if (tmpcolour != null)
                 {
-                    Colour checkcolour = db.Colours.SingleOrDefault(x => x.Name.ToLower() == model.Name.ToLower() && x.ColourId != model.ColourId);
-                    if (checkcolour == null)
-                    {
-                        tmpmodel.Name = model.Name;
-                        tmpmodel.EditDate = DateTime.UtcNow;
+                    tmpcolour.Name = colour.Name;
+                    tmpcolour.EditDate = DateTime.Now;
 
-                        db.Entry(tmpmodel).State = EntityState.Modified;
-                        db.SaveChanges();
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Duplicate colour entry");
-                    }
+                    db.Entry(tmpcolour).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                
                 }
             }
-            return View(model);
+            return View(colour);
         }
 
         // GET: Colours/Delete/5

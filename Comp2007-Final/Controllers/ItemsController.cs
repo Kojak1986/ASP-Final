@@ -55,7 +55,7 @@ namespace Comp2007_Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name,ColourIds")] Item model, string[] ColoursIds, FormCollection fc)
+        public ActionResult Create([Bind(Include = "Name,ColourIds")] Item model, string[] ColourIds, FormCollection fc)
         {
             if (ModelState.IsValid)
             {
@@ -65,9 +65,9 @@ namespace Comp2007_Final.Controllers
                     db.Items.Add(model);
                     db.SaveChanges();
 
-                    if (ColoursIds != null)
+                    if (ColourIds != null)
                     {
-                        foreach (string colourid in ColoursIds)
+                        foreach (string colourid in ColourIds)
                         {
                             Order order = new Order();
 
@@ -117,7 +117,7 @@ namespace Comp2007_Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ItemId,Name,CreateDate,EditDate")] Item model, string[] ColourIds)
+        public ActionResult Edit([Bind(Include = "ItemId,Name,ColourIds")] Item model, string[] ColourIds, FormCollection fc)
         {
             if (ModelState.IsValid)
             {
@@ -157,7 +157,7 @@ namespace Comp2007_Final.Controllers
 
                                 order.ItemId = tmpModel.ItemId;
                                 //added this
-                                order.FinishId = addItem;
+                                order.FinishId = fc["FinishId"]; 
                                 order.ColourId = addItem;
 
                                 db.Orders.Add(order);
