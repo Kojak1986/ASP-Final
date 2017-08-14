@@ -1,12 +1,14 @@
 ﻿@model Comp2007_Final.Models.Item
+  
 
 @{
     ViewBag.Title = "Details";
 }
  
-<h2>Details Item</h2>
+<h2>Details</h2>
 
 <div>
+    <h4>Item</h4>
     <hr />
     <dl class="dl-horizontal imageInfo">
         <dt>
@@ -15,6 +17,25 @@
 
         <dd>
             @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Colours)
+        </dt>
+        <dd>
+            <ul>
+                @foreach (var item in Model.Colours)
+                {
+                    <li>@item.ToString()</li>
+                }
+            </ul>
+        </dd>
+
+        <dt>
+            @Html.Partial("_FinishDetails", new Comp2007_Final.Models.ItemFinish());
+        </dt>
+        <dd>
+
         </dd>
 
         <dt>
