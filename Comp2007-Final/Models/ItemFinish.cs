@@ -9,7 +9,13 @@ namespace Comp2007_Final.Models
     [Table("ItemFinish")]
     public partial class ItemFinish
     {
+        public ItemFinish()
+        {
+
+        }
+
         [Key]
+        [DatabaseGenerated(databaseGeneratedOption: DatabaseGeneratedOption.Identity)]
         public string FinishId { get; set; }
 
         [Required]
