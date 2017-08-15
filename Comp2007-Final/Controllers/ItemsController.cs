@@ -24,6 +24,15 @@ namespace Comp2007_Final.Controllers
             return View(db.Items.ToList());
         }
 
+        public ActionResult Gallery()
+        {
+            //Sort Items
+            var items = db.Items.AsQueryable();
+            items = items.OrderBy(x => x.Name).AsQueryable();
+
+            return View(db.Items.ToList());
+        }
+
         // GET: Items/Details/5
         public ActionResult Details(string id)
         {
@@ -59,30 +68,36 @@ namespace Comp2007_Final.Controllers
         {
             if (ModelState.IsValid)
             {
-                Item checkmodel = db.Items.SingleOrDefault(x => x.Name.ToLower() == model.Name.ToLower());
+                
+                    Item checkmodel = db.Items.SingleOrDefault(x => x.Name.ToLower() == model.Name.ToLower());
                 if (checkmodel == null)
                 {
-                    db.Items.Add(model);
-                    db.SaveChanges();
+                    if (ColourIds != null)
+                    {
+                        db.Items.Add(model);
+                        db.SaveChanges();
 
-                        //Check colours
-                        if (ColourIds != null)
+                        foreach (string colourid in ColourIds)
                         {
-                            foreach (string colourid in ColourIds)
-                            {
-                                Order order = new Order();
-                                order.ItemId = model.ItemId;
-                                order.ColourId = colourid;
-                                order.FinishId = fc["FinishId"]; 
+                            Order order = new Order();
+                            order.ItemId = model.ItemId;
+                            order.ColourId = colourid;
+                            order.FinishId = fc["FinishId"];
 
-                                model.Colours.Add(order);
-                            }
+                            model.Colours.Add(order);
+                        }
 
-                            db.Entry(model).State = EntityState.Modified;
-                            db.SaveChanges();
-                       }
+                        db.Entry(model).State = EntityState.Modified;
+                        db.SaveChanges();
 
-                    return RedirectToAction("Index");
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ViewBag.Colours = new MultiSelectList(db.Colours.ToList(), "ColourId", "Name", model.Colours.Select(x => x.ColourId).ToArray());
+                        ViewBag.Finish = db.ItemFinishes.ToList();
+                        ModelState.AddModelError("", "Please pick at least one colour");
+                    }
                 }
                 else
                 {
@@ -91,6 +106,7 @@ namespace Comp2007_Final.Controllers
                     ModelState.AddModelError("", "Duplicate item entry");
 
                 }
+                
             }
 
             return View(model);

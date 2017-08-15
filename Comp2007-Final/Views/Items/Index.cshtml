@@ -1,14 +1,19 @@
 ﻿@model IEnumerable<Comp2007_Final.Models.Item>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Items Index";
 }
 
-<h2>Index</h2>
+<h2>Items Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @if (Request.IsAuthenticated)
+    {
+        @Html.ActionLink("Create New", "Create")
+    }
+    <span style="float:right;">@Html.ActionLink("View Gallery", "Gallery")</span>
 </p>
+
 <table class="table">
     <tr>
         <th>

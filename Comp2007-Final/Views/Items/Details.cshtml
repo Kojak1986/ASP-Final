@@ -22,20 +22,14 @@
         <dt>
             @Html.DisplayNameFor(model => model.Colours)
         </dt>
+
         <dd>
-            <ul>
+            <ul style="padding-left:15px;">
                 @foreach (var item in Model.Colours)
                 {
-                    <li>@item.ToString()</li>
+                    <li>@item.Colour.ToString()</li>
                 }
             </ul>
-        </dd>
-
-        <dt>
-            @Html.Partial("_FinishDetails", new Comp2007_Final.Models.ItemFinish());
-        </dt>
-        <dd>
-
         </dd>
 
         <dt>

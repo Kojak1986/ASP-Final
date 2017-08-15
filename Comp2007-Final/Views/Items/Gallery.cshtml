@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Comp2007_Final.Models.Item>
+@{
+    ViewBag.Title = "Index Gallery";
+}
+
+<h2>Items Gallery</h2>
+
+<p>
+@if (Request.IsAuthenticated)
+{
+    @Html.ActionLink("Create New", "Create")
+}
+    <span style="float:right">@Html.ActionLink("View List", "Index")</span>
+</p>
+
+@foreach (var item in Model)
+{
+
+
+
+<div class="gallery">
+        <img class="itemImgSmall" src="../../Content/Assets/@(Html.DisplayFor(modelItem => item.Name)).jpg" onerror="this.onerror = null; this.src = '../../Content/Assets/nofile.jpeg'" />
+        <div class="desc">@(Html.DisplayFor(modelItem => item.Name))</div>
+</div>
+}
