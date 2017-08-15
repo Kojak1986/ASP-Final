@@ -140,53 +140,66 @@ namespace Comp2007_Final.Controllers
         {
             if (ModelState.IsValid)
             {
-                Item tmpModel = db.Items.Find(model.ItemId); 
+                Item tmpModel = db.Items.Find(model.ItemId);
                 if (tmpModel != null)
                 {
                     Item checkModel = db.Items.SingleOrDefault(
                                         x => x.Name == model.Name &&
                                         x.ItemId != model.ItemId);
-                    
+
 
                     if (checkModel == null)
                     {
-                        tmpModel.Name = model.Name;
-                        tmpModel.EditDate = DateTime.UtcNow;
-
-
-                        db.Entry(tmpModel).State = EntityState.Modified;
-
-                        //To remove colours
-                        var removeItems = tmpModel.Colours.Where(x => !ColourIds.Contains(x.ColourId)).ToList();
-
-                        foreach (var removeItem in removeItems)
+                        if (ColourIds != null)
                         {
-                            db.Entry(removeItem).State = EntityState.Deleted;
-                        }
+                            tmpModel.Name = model.Name;
+                            tmpModel.EditDate = DateTime.UtcNow;
 
-                        if (ColourIds != null && fc["FinishId"] != null )
-                        {
-                            var addItems = ColourIds.Where(x => !tmpModel.Colours.Select(y => y.ColourId).Contains(x));
-                            //Items to add
-                            foreach (string addItem in addItems)
+
+                            db.Entry(tmpModel).State = EntityState.Modified;
+
+                            //To remove colours
+                            // var removeItems = tmpModel.Colours.Where(x => !ColourIds.Contains(x.ColourId)).ToList();
+                            var removeItems = tmpModel.Colours.ToList();
+
+                            foreach (var removeItem in removeItems)
                             {
-                                Order order = new Order();
-                                order.EditDate = DateTime.UtcNow;
-                                order.ItemId = tmpModel.ItemId;
-                                order.FinishId = fc["FinishId"];
-                                order.ColourId = addItem;
-
-                                db.Orders.Add(order);
+                                db.Entry(removeItem).State = EntityState.Deleted;
                             }
-                        }
 
-                        db.SaveChanges();
-                        return RedirectToAction("Index");
+                            if (ColourIds != null && fc["FinishId"] != null)
+                            {
+                                var addItems = ColourIds.Where(x => !tmpModel.Colours.Select(y => y.ColourId).Contains(x));
+                                //Items to add
+                                foreach (string addItem in addItems)
+                                {
+                                    Order order = new Order();
+                                    order.EditDate = DateTime.UtcNow;
+                                    order.ItemId = tmpModel.ItemId;
+                                    order.FinishId = fc["FinishId"];
+                                    order.ColourId = addItem;
+
+                                    db.Orders.Add(order);
+                                }
+                            }
+
+                            db.SaveChanges();
+                            return RedirectToAction("Index");
+                        
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Duplicated game detected. ");
+                        ViewBag.Colours = new MultiSelectList(db.Colours.ToList(), "ColourId", "Name", model.Colours.Select(x => x.ColourId).ToArray());
+                        ViewBag.Finish = db.ItemFinishes.ToList();
+                        ModelState.AddModelError("", "Please pick at least one colour");
                     }
+                }
+                else
+                    {
+                        ViewBag.Colours = new MultiSelectList(db.Colours.ToList(), "ColourId", "Name", model.Colours.Select(x => x.ColourId).ToArray());
+                        ViewBag.Finish = db.ItemFinishes.ToList();
+                        ModelState.AddModelError("", "Duplicated game detected. ");
+                }
                 }
             }
             ViewBag.Genres = new MultiSelectList(db.Colours.ToList(), "GenreId", "Name", ColourIds);
