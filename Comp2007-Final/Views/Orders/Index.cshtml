@@ -1,13 +1,16 @@
 ﻿@model IEnumerable<Comp2007_Final.Models.Order>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Orders";
 }
 
-<h2>Index</h2>
+<h2>Orders</h2>
 
 <p>
+@if (Request.IsAuthenticated)
+{
     @Html.ActionLink("Create New", "Create")
+}
 </p>
 <table class="table">
     <tr>
@@ -47,9 +50,15 @@
             @Html.DisplayFor(modelItem => item.EditDate)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.OrderId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.OrderId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.OrderId })
+            @if (Request.IsAuthenticated)
+            {
+            @Html.ActionLink("Edit", "Edit", new { id = item.OrderId }) <span>|</span>
+            }   
+            @Html.ActionLink("Details", "Details", new { id=item.OrderId }) 
+            @if (Request.IsAuthenticated)
+            {
+                <span>|</span> @Html.ActionLink("Delete", "Delete", new { id = item.OrderId })
+            }
         </td>
     </tr>
 }
