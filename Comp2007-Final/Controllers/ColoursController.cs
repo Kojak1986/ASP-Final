@@ -40,6 +40,7 @@ namespace Comp2007_Final.Controllers
         }
 
         // GET: Colours/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -50,6 +51,7 @@ namespace Comp2007_Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Create([Bind(Include = "Name")] Colour model) 
         {
             if (ModelState.IsValid)
@@ -73,6 +75,7 @@ namespace Comp2007_Final.Controllers
         }
 
         // GET: Colours/Edit/5
+        [Authorize]
         public ActionResult Edit(string id)
         {
             if (id == null)
@@ -92,6 +95,7 @@ namespace Comp2007_Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Edit([Bind(Include = "ColourId,Name")] Colour model, FormCollection fc)
         {
             if (ModelState.IsValid)
@@ -121,6 +125,7 @@ namespace Comp2007_Final.Controllers
         }
 
         // GET: Colours/Delete/5
+        [Authorize]
         public ActionResult Delete(string id)
         {
             if (id == null)

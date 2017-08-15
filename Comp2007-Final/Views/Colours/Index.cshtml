@@ -1,13 +1,16 @@
 ﻿@model IEnumerable<Comp2007_Final.Models.Colour>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Colours";
 }
 
-<h2>Index</h2>
+<h2>Colours</h2>
 
 <p>
+@if (Request.IsAuthenticated)
+{
     @Html.ActionLink("Create New", "Create")
+    }
 </p>
 <table class="table">
     <tr>
@@ -35,9 +38,16 @@
             @Html.DisplayFor(modelItem => item.EditDate)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ColourId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ColourId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ColourId })
+            @if (Request.IsAuthenticated)
+            {
+                 @Html.ActionLink("Edit", "Edit", new { id = item.ColourId }) <span>|</span>
+            }
+                 @Html.ActionLink("Details", "Details", new { id=item.ColourId })
+            @if (Request.IsAuthenticated)
+            {
+                 <span>|</span>
+                 @Html.ActionLink("Delete", "Delete", new { id = item.ColourId })
+            }
         </td>
     </tr>
 }
