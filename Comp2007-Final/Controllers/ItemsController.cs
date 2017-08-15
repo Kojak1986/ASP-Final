@@ -49,6 +49,7 @@ namespace Comp2007_Final.Controllers
         }
 
         // GET: Items/Create
+        [Authorize]
         public ActionResult Create()
         {
             Item model = new Item();
@@ -64,6 +65,7 @@ namespace Comp2007_Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Create([Bind(Include = "Name,ColourIds")] Item model, string[] ColourIds, FormCollection fc)
         {
             if (ModelState.IsValid)
@@ -113,6 +115,7 @@ namespace Comp2007_Final.Controllers
         }
 
         // GET: Items/Edit/5
+        [Authorize]
         public ActionResult Edit(string id)
         {
             if (id == null)
@@ -136,6 +139,7 @@ namespace Comp2007_Final.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Edit([Bind(Include = "ItemId,Name,ColourIds")] Item model, string[] ColourIds, FormCollection fc)
         {
             if (ModelState.IsValid)
@@ -207,6 +211,7 @@ namespace Comp2007_Final.Controllers
         }
 
         // GET: Items/Delete/5
+        [Authorize]
         public ActionResult Delete(string id)
         {
             if (id == null)

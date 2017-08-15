@@ -7,10 +7,10 @@
 <h2>Create Item</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal imageInfo">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
