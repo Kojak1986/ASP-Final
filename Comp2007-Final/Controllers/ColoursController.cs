@@ -18,10 +18,10 @@ namespace Comp2007_Final.Controllers
         public ActionResult Index()
         {
             //Sort by Name
-           // var colours = db.Colours.AsQueryable();
-            //colours = colours.OrderBy(x => x.Name).AsQueryable();
+            var colours = db.Colours.AsQueryable();
+            colours = colours.OrderBy(x => x.Name).AsQueryable();
 
-            return View(db.Colours.ToList());
+            return View(colours.ToList());
         }
 
         // GET: Colours/Details/5

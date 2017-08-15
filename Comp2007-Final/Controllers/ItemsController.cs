@@ -21,16 +21,16 @@ namespace Comp2007_Final.Controllers
             var items = db.Items.AsQueryable();
             items = items.OrderBy(x => x.Name).AsQueryable();
 
-            return View(db.Items.ToList());
+            return View(items.ToList());
         }
 
         public ActionResult Gallery()
         {
             //Sort Items
             var items = db.Items.AsQueryable();
-            items = items.OrderBy(x => x.Name).AsQueryable();
+            items = items.OrderBy(x => x.Name);
 
-            return View(db.Items.ToList());
+            return View(items.ToList());
         }
 
         // GET: Items/Details/5
