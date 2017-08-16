@@ -1,6 +1,8 @@
 namespace Comp2007_Final.Migration.DataContext
 {
+    using Models;
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
@@ -15,14 +17,25 @@ namespace Comp2007_Final.Migration.DataContext
 
         protected override void Seed(Comp2007_Final.Models.DataContext context)
         {
-            context.Colours.Add(new Models.Colour { Name = "Blue" });
-            context.Colours.Add(new Models.Colour { Name = "Green" });
-            context.Colours.Add(new Models.Colour { Name = "Orange" });
-            context.Colours.Add(new Models.Colour { Name = "Purple" });
 
+            List<string> finishes = new List<string>();
+            finishes.Add("Matte");
+            finishes.Add("Glossy");
 
-            context.ItemFinishes.Add(new Models.ItemFinish { Name = "Matte" });
-            context.ItemFinishes.Add(new Models.ItemFinish { Name = "Glossy" });
+            foreach (var finish in finishes)
+            {
+                ItemFinish newFinish = new ItemFinish();
+                newFinish.Name = finish;
+
+                ItemFinish checkfinish = context.ItemFinishes.SingleOrDefault(x => x.Name == newFinish.Name);
+                if (checkfinish == null)
+                {
+                    context.ItemFinishes.Add(newFinish);
+                }
+            }
+            context.SaveChanges();
+
+            
             //  This method will be called after migrating to the latest version.
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
